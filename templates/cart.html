@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Корзина</title>
+</head>
+<body>
+    <h2>Корзина</h2>
+    {% if cart_items %}
+        {% for item in cart_items %}
+            <div>{{ item.product.name }} x{{ item.quantity }}</div>
+        {% endfor %}
+        <p>Итого: {{ total_price }} руб.</p>
+
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('checkout') }}">Оформить заказ</a>
+        {% else %}
+            <p><a href="{{ url_for('login') }}">Войдите</a>, чтобы оформить заказ</p>
+            <form method="POST" action="{{ url_for('checkout') }}">
+                <input type="text" name="phone" placeholder="Телефон для заказа" required>
+                <button type="submit">Заказать по телефону</button>
+            </form>
+        {% endif %}
+    {% else %}
+        <p>Корзина пуста</p>
+    {% endif %}
+    <a href="{{ url_for('index') }}">Назад</a>
+</body>
+</html>
